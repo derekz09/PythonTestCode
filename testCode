@@ -1,4 +1,15 @@
+
 x = input("Type a number: ")
 
 if (int(x) >= 5):
   print(x)
+
+
+
+
+
+
+
+
+
+
