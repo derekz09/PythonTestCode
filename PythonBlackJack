@@ -1,0 +1,159 @@
+# Gives a random card and removes it from deck
+def randomCard():
+  if len(deck) > 0:
+    number = random.randint(0, len(deck)-1)
+    card = deck[number]
+    deck.pop(number)
+    return card
+  else:
+    print("Shuffling Deck:")
+    for x in range(int(numberDeck)):
+      for suit in suits:
+        for rank in ranks:
+          deck.append(rank+suit)
+
+    random.shuffle(deck)
+    return randomCard()
+  
+  
+# Calculates value of cards 
+def calcValue(cards, player):
+  value = 0 
+  for card in cards:
+    parts = list(card)
+    num = parts[0]
+    if num == "2":
+      value += 2
+    elif num == "3":
+      value += 3
+    elif num == "4":
+      value += 4
+    elif num == "5":
+      value += 5
+    elif num == "6":
+      value += 6
+    elif num == "7":
+      value += 7
+    elif num == "8":
+      value += 8
+    elif num == "9":
+      value += 9
+    elif (num == "T") or (num == "J") or (num == "Q") or (num == "K"):
+      value += 10
+    elif (num == "A"):
+      if player == "person":
+        if (value + 11) <= 21:
+          value += 11
+        else:
+          value += 1
+        
+        
+      #  y = "true"
+      #  while y == "true":
+      #    aceVal = input("1 or 11? ")
+      #    if (aceVal == "1"):
+      #      value += 1
+      #      y = "false"
+      #    elif (aceVal == "11"):
+      #      value += 11
+      #      y = "false"
+      #    else:
+      #      print("Must be 1 or 11")
+      elif player == "house":
+        if (value + 11) <= 21:
+          value += 11
+        else:
+          value += 1
+      
+      
+  return(value)
+    
+      
+    
+
+import random
+# Creates Deck
+numberDeck = input("How many number of decks? ")
+
+suits = ["♠︎","❤️", "♣️","♦️"]
+ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"]
+deck = []
+for x in range(int(numberDeck)):
+  for suit in suits:
+    for rank in ranks:
+      deck.append(rank+suit)
+
+random.shuffle(deck)
+
+
+# Game loop:
+games = 0
+while games == 0:
+  win = "unknown"
+  # Generates Face-up card for house
+  houseCard1 = randomCard()
+
+  # Generates player hand
+  hand = [randomCard(), randomCard()]
+
+  print("House Face Up Card: " + houseCard1)
+
+  print("Your cards: " + hand[0] + " and " + hand[1])
+  val = 0
+  
+  # Calculates value of starting hand
+  val = calcValue(hand, "person")
+  print("Value: " + str(val))
+
+  
+  # Options for player
+  x = "true"
+  while x == "true":
+    choice = input("Hit or Stay: ")
+    if (choice == "Hit") or (choice == "hit"):
+      ranCard = randomCard()
+      hand.append(ranCard)
+    elif (choice == "Stay") or (choice == "stay"):
+      x = "false"
+    else:
+      print("Must type Hit or Stay")
+    print(hand)
+    val = calcValue(hand, "person")
+    if val > 21:
+      print("Bust! You Lost")
+      x = "false"
+      win = "false"
+    else:
+      print("Value: " + str(val))
+
+  # If player didn't bust, generates and calculates house hand
+  if win != "false":
+    compHand = [houseCard1, randomCard()]
+    z = "true"
+    while z == "true":
+      print(compHand)
+      compVal = calcValue(compHand, "house")
+      if compVal <= 16:
+        ranCompCard = randomCard()
+        compHand.append(ranCompCard)
+      else:
+        z = "false"
+    print("Comp Value: " + str(compVal))
+
+    # Calculates who won
+    if (compVal > 21):
+      print("House Bust. You Win!")
+    elif (compVal > val):
+      print("You Lost!")
+    elif (compVal < val):
+      print("You Win!")
+    else:
+      print("Tied!")
+     # Repeat loop or end loop
+  playAgain = input("Play again? (Yes or No): " )
+  
+  if (playAgain == "no") or (playAgain == "No"):
+    games = 1
+  else:
+    games = 0
+    
