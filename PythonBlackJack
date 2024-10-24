@@ -73,7 +73,6 @@ def calcValue(cards, player):
       
   return(value)
     
-      
     
 
   
@@ -86,8 +85,14 @@ import random
 
 startingMoney = 10000
 bet = 0
+x = 0
 print("Starting Cash: $" + str(startingMoney))
-numberDeck = input("How many number of decks? ")
+while x == 0:
+  numberDeck = input("How many number of decks? ")
+  if numberDeck.isdigit():
+    x = 1
+  else:
+    print("Type in Positive, Whole Numbers.")
 
 
 suits = ["♠︎","❤️", "♣️","♦️"]
